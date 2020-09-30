@@ -3,6 +3,9 @@ import * as UUID from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAllTodos } from '../../features/todo/todo.select';
 import { todoAddOne } from '../../features/todo/todo.slice';
+import Header from '../organisms/header';
+import FormWrapper from '../organisms/formWrapper';
+import TodoList from '../organisms/todoList';
 
 const Home: React.FC = () => {
   const [value, setValue] = useState('');
@@ -15,12 +18,14 @@ const Home: React.FC = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+
+    if (value === '') return;
+
     const id = UUID.v4();
     dispath(
       todoAddOne({
         id,
-        title: value,
-        discription: value,
+        description: value,
         isDone: false,
       })
     );
@@ -30,16 +35,13 @@ const Home: React.FC = () => {
 
   return (
     <>
-      <ul>
-        {todos.map((todo) => {
-          return <li>{todo.title}</li>;
-        })}
-      </ul>
-
-      <form onSubmit={handleSubmit}>
-        <input type="text" value={value} onChange={handleChange} />
-        <button type="submit">作成</button>
-      </form>
+      <Header />
+      <FormWrapper
+        handleSubmit={handleSubmit}
+        handleChange={handleChange}
+        value={value}
+      />
+      <TodoList todos={todos} />
     </>
   );
 };
