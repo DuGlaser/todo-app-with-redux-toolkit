@@ -2,8 +2,7 @@ import { createEntityAdapter, EntityState } from '@reduxjs/toolkit';
 
 export interface Todo {
   id: string;
-  title: string;
-  discription: string;
+  description: string;
   isDone: boolean;
 }
 
