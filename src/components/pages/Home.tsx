@@ -2,10 +2,11 @@ import React, { useState } from 'react';
 import * as UUID from 'uuid';
 import { useSelector, useDispatch } from 'react-redux';
 import { selectAllTodos } from '../../features/todo/todo.select';
-import { todoAddOne } from '../../features/todo/todo.slice';
+import { todoAddOne, todoUpdateOne } from '../../features/todo/todo.slice';
 import Header from '../organisms/header';
 import FormWrapper from '../organisms/formWrapper';
 import TodoList from '../organisms/todoList';
+import { Todo } from '../../features/todo/todo.entity';
 
 const Home: React.FC = () => {
   const [value, setValue] = useState('');
@@ -14,6 +15,12 @@ const Home: React.FC = () => {
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+  };
+
+  const handleTodoDone = (todo: Todo) => {
+    dispath(
+      todoUpdateOne({ id: todo.id, changes: { ...todo, isDone: !todo.isDone } })
+    );
   };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
@@ -41,7 +48,7 @@ const Home: React.FC = () => {
         handleChange={handleChange}
         value={value}
       />
-      <TodoList todos={todos} />
+      <TodoList todos={todos} handleTodoDone={handleTodoDone} />
     </>
   );
 };
